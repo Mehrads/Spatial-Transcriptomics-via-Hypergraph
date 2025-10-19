@@ -19,8 +19,8 @@ class GAT(nn.Module):
                  feat_drop,
                  attn_drop,
                  negative_slope,
-                 residual,
-                 norm,
+                 residual=False,
+                 norm=None,
                  concat_out=False,
                  encoding=False
                  ):

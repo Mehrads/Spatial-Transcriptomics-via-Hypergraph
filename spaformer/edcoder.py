@@ -77,6 +77,7 @@ def setup_module(m_type, enc_dec, in_dim, num_hidden, out_dim, num_layers, dropo
             feat_drop=dropout,
             attn_drop=attn_drop,
             negative_slope=negative_slope,
+            residual=True,
             norm=create_norm(norm),
             encoding=(enc_dec == "encoding"),
         )
@@ -92,6 +93,7 @@ def setup_module(m_type, enc_dec, in_dim, num_hidden, out_dim, num_layers, dropo
             activation=activation,
             feat_drop=dropout,
             attn_drop=attn_drop,
+            residual=True,
             norm=create_norm(norm),
             encoding=(enc_dec == "encoding"),
         )
@@ -448,12 +450,17 @@ class PreModel(nn.Module):
             enc_num_hidden = num_hidden
             enc_nhead = nhead
 
+        enc_nhead_out = nhead_out if nhead_out is not None else 1
+        if latent_dim % enc_nhead_out != 0:
+            raise ValueError(f'latent_dim {latent_dim} must be divisible by num_out_heads {enc_nhead_out}')
+        per_head_out = latent_dim // enc_nhead_out
+
         dec_in_dim = latent_dim
         dec_num_hidden = num_hidden // nhead_out if decoder_type in ("gat", "dotgat") else num_hidden 
         if objective in ['vae', 'maskvae']:
             enc_out_dim = enc_num_hidden
         else:
-            enc_out_dim = latent_dim
+            enc_out_dim = per_head_out
             
         # build encoder
         self.encoder = setup_module(
@@ -464,7 +471,7 @@ class PreModel(nn.Module):
             out_dim=enc_out_dim,
             num_layers=num_layers,
             nhead=enc_nhead,
-            nhead_out=enc_nhead,
+            nhead_out=enc_nhead_out,
             concat_out=True,
             activation=activation,
             dropout=feat_drop,

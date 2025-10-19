@@ -19,8 +19,8 @@ class DotGAT(nn.Module):
                  activation,
                  feat_drop,
                  attn_drop,
-                 residual,
-                 norm,
+                 residual=False,
+                 norm=None,
                  concat_out=False,
                  encoding=False
                  ):
