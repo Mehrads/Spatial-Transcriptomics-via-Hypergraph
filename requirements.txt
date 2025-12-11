@@ -1,11 +1,21 @@
 torch
 torchvision
 torchaudio
-# dgl==0.9.1post1
-scanpy==1.10.4
-POT==0.9.5
-scikit-misc
 torchdata
+torch_geometric
+pandas
+# dgl==0.9.1.post1
+scanpy
+POT
+scikit-learn
+scikit-misc
 pydantic
 jupyter
-torch_geometric
+ipykernel
+umap-learn
+matplotlib
+seaborn
+networkx
+ogb
+statsmodels
+nbformat
