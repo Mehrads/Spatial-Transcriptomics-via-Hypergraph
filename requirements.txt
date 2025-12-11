@@ -1,9 +1,11 @@
-torch
+numpy==1.26.4
+torch==2.3.1
 torchvision
 torchaudio
 torchdata
 torch_geometric
-pandas
+performer-pytorch==0.2.1
+pandas==2.2.3
 # dgl==0.9.1.post1
 scanpy
 POT
