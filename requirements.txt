@@ -6,8 +6,9 @@ torchdata
 torch_geometric
 performer-pytorch==0.2.1
 pandas==2.2.3
-# dgl==0.9.1.post1
 scanpy
+igraph
+leidenalg
 POT
 scikit-learn
 scikit-misc

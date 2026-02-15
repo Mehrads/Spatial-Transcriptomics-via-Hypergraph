@@ -1,26 +1,32 @@
 # Spatial-Transcriptomics-via-Hypergraph
-The source code uses Python 3.10.
+The source code targets Python 3.10.
 
-It is recommended to create a venv or other isolated package installation method.
-To ensure the correct Python version is used, add -3.10 when creating the venv:
-```py -3.10 -m venv .venv```
+It is recommended to create a virtual environment:
+`py -3.10 -m venv .venv`
 
-Don't forget to activate the venv!
+Install project dependencies:
+`pip install -r requirements.txt`
 
-The requirements.txt includes all major packages needed to run the code (dependencies not included on the list should be handled by your package installer)
-With venv and pip, the packages can be installed with
-```pip install -r requirements.txt```
+Leiden clustering in Scanpy requires `igraph` + `leidenalg` (included in `requirements.txt`).
 
-dgl 0.9.1 will need to be installed manually. Please download the .whl file [here](https://pypi.org/project/dgl/0.9.1/#files)
-Run pip install with the directory to the .whl file entered. For example:```pip install ./dgl-0.9.1-cp310-cp310-win_amd64.whl```
+SpaFormer now uses PyTorch Geometric (PyG) by default in `spaformer.ipynb`.
+DGL is optional and only needed if you explicitly set `USE_PYG=False` in the notebook.
+For multi-GPU training in SpaFormer, keep `USE_PYG=True`, `device='auto'` (or `'cuda'`), and `use_all_gpus=True`.
 
-Lastly, you may be asked to install Microsoft C++ Build Tools. You can download the installer [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-You only need to install the "Desktop development with C++" and you're good to go.
+## PyG install notes (CPU/CUDA)
+1. Install a matching PyTorch build first (CPU or CUDA) from https://pytorch.org/get-started/locally/.
+2. Install PyG packages that match your Torch/CUDA build using https://data.pyg.org/whl/.
+3. CPU example:
+`pip install torch_geometric torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-${TORCH_VERSION}+cpu.html`
+4. CUDA example:
+`pip install torch_geometric torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-${TORCH_VERSION}+cu${CUDA_VERSION}.html`
+5. Verify:
+`python -c "import torch, torch_geometric; print(torch.__version__, torch.cuda.is_available())"`
 
-The jupyter notebooks save their results in the Data folder to serve as both a checkpoint and reusable data. This means HGNN.ipynb can be run without running the other notebooks, as long as the Data folder wasn't deleted after cloning.
+Notebook outputs are saved under `Data/` as reusable artifacts/checkpoints.
 
-To run the code, run the .ipynb's with the following order:
-1. Preprocess.ipynb
-2. spaformer.ipynb
-3. hypergraph.ipynb
-4. HGNN.ipynb
+Run notebooks in this order:
+1. `Preprocess.ipynb`
+2. `spaformer.ipynb`
+3. `hypergraph.ipynb`
+4. `HGNN.ipynb`
